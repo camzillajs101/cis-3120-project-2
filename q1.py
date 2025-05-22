@@ -65,4 +65,4 @@ combined_df = pd.concat([web_df.iloc[:30],api_df],axis=1)
 print(combined_df)
 print(combined_df.describe())
 
-combined_df.to_csv('output.csv',index=False)
+combined_df.to_csv('q1_output.csv',index=False)
