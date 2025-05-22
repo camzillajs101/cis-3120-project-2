@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 scraping_url = "https://en.wikipedia.org/wiki/List_of_Major_League_Baseball_players_from_Puerto_Rico"
 page = requests.get(scraping_url)
 
-df_dict = {
+web_dict = {
     "Name": [],
     "Team": [],
     "Years": []
@@ -26,7 +26,7 @@ if page.status_code == 200:
 else:
     print("API error")
 
-df = pd.DataFrame(df_dict)
+web_df = pd.DataFrame(df_dict)
 
 # --API PART--
 scraping_url = "https://www.thesportsdb.com/api/v1/json/3/"
@@ -34,7 +34,7 @@ player_search_url = scraping_url + "searchplayers.php?p="
 player_details_url = scraping_url + "lookupplayer.php?id="
 
 api_dict = {
-    "Name": [],
+    "Result": [],
     "Number": [],
     "Position": [],
     "Height": [],
@@ -48,8 +48,13 @@ for player in df_dict["Name"][:30]:
     api_call_details = requests.get(player_details_url + player_id)
     player_info = api_call_details.json()['players'][0]
     
-    api_dict["Name"].append(player_info['strPlayer'])
+    api_dict["Result"].append(player_info['strPlayer'])
     api_dict["Number"].append(player_info['strNumber'])
     api_dict["Position"].append(player_info['strPosition'])
     api_dict["Height"].append(player_info['strHeight'])
     api_dict["Weight"].append(player_info['strWeight'])
+
+api_df = pd.DataFrame(api_dict)
+
+# --COMBINATION--
+combined_df = pd.concat([web_df.iloc[:30],api_df],axis=1)
