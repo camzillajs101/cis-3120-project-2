@@ -94,8 +94,8 @@ def process_data(school_url_dict):
                     heights.append(height_in_inches)
                     schools.append(school)
                 except:
-                    continue  # Skip malformed height
-    #Created a DataFrame to incorporate all the data.
+                    continue  # Skip invalid height
+    #We created a DataFrame to incorporate all the data.
     data = {
         'School': schools,
         'Name': names,
@@ -112,7 +112,7 @@ mens_swimming_df.to_csv("mens_swimming.csv", index=False)
 print(f"Men's Swimming Average Height: {mens_swimming_avg} inches")
 
 #we are reusing the code above, to do the same for the womens swimming and mens women and
-#volleyball team respectively.
+#volleyball team respectively. We will apply it to the other teams as well
 women_swimming_df, women_swimming_avg = process_data(womens_swimming_urls)
 women_swimming_df.to_csv("womens_swimming.csv", index=False)
 print(f"Womens's Swimming Average Height: {women_swimming_avg} inches")
@@ -125,3 +125,41 @@ women_volleyball_df, women_volleyball_avg = process_data(womens_volleyball_urls)
 women_volleyball_df.to_csv("womens_volleyball.csv", index=False)
 print(f"Womens's Volleyball Average Height: {women_volleyball_avg} inches")
 
+def tallest_to_shortest(df, label):
+    #We are sortin the values in the data frame from highest to shortest using 
+    #ascending=False
+    sorted_df = df.sort_values(by='Height (inches)', ascending=False)
+
+    # Find tallest height
+    tallest_height = sorted_df['Height (inches)'].max()
+    tallest = sorted_df[sorted_df['Height (inches)'] == tallest_height]
+
+    print("Tallest Height:", label)
+    print(tallest[['Name', 'Height (inches)']])
+
+    # Find shortest height
+    shortest_height = sorted_df['Height (inches)'].min()
+    shortest = sorted_df[sorted_df['Height (inches)'] == shortest_height]
+
+    print("Shortest Height:", label)
+    print(shortest[['Name', 'Height (inches)']])
+
+#Display tallest heights for each team
+tallest_to_shortest(mens_swimming_df, "Men's Swimming")
+tallest_to_shortest(women_swimming_df, "Women's Swimming")
+tallest_to_shortest(mens_volleyball_df, "Men's Volleyball")
+tallest_to_shortest(women_volleyball_df, "Women's Volleyball")
+
+# We have created a bar chart with with categories for Men and Women Volleyball and Swimming Teams
+# We have created a list called averages assigning it with the averages for the individual teams
+#And we use the plot.bar to display the categories and averages as the values
+# And we are saving it as a png file. called "height_bar_chart.png"
+categories = ['Men’s Swimming', 'Women’s Swimming', 'Men’s Volleyball', 'Women’s Volleyball']
+averages = [mens_swimming_avg, women_swimming_avg, mens_volleyball_avg, women_volleyball_avg]
+
+plt.bar(categories, averages)
+plt.title("Average Heights by Team Category")
+plt.ylabel("Height (inches)")
+plt.tight_layout()
+plt.savefig("height_bar_chart.png")
+plt.show()
