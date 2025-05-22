@@ -42,16 +42,16 @@ api_dict = {
 }
 
 for player in web_dict["Name"][:30]:
-    api_call_search = requests.get(player_search_url + player.replace(" ","_"))
-    player_id = api_call_search.json()['player'][0]['idPlayer']
+    api_call_search = requests.get(player_search_url + player.replace(" ","_")) # search for player name with spaces replaced by underscores
+    player_id = api_call_search.json()['player'][0]['idPlayer'] # store this player's id
     
-    api_call_details = requests.get(player_details_url + player_id)
-    player_info = api_call_details.json()['players'][0]
+    api_call_details = requests.get(player_details_url + player_id) # use the id to get their details
+    player_info = api_call_details.json()['players'][0] # store this info
 
     if api_call_search.status_code != 200 or api_call_details.status_code != 200:
         raise Exception("API error")
     
-    api_dict["Result"].append(player_info['strPlayer'])
+    api_dict["Result"].append(player_info['strPlayer']) # populate dictionary
     api_dict["Number"].append(player_info['strNumber'])
     api_dict["Position"].append(player_info['strPosition'])
     api_dict["Height"].append(player_info['strHeight'])
