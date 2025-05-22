@@ -119,7 +119,7 @@ print(f"Womens's Swimming Average Height: {women_swimming_avg} inches")
 
 mens_volleyball_df, mens_volleyball_avg = process_data(mens_volleyball_urls)
 mens_volleyball_df.to_csv("mens_volleyball.csv", index=False)
-print(f"Men's Swimming Volleyball Height: {mens_volleyball_avg} inches")
+print(f"Men's Volleyball Height: {mens_volleyball_avg} inches")
 
 women_volleyball_df, women_volleyball_avg = process_data(womens_volleyball_urls)
 women_volleyball_df.to_csv("womens_volleyball.csv", index=False)
